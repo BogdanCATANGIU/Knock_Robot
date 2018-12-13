@@ -14,7 +14,7 @@
         args="-param robot_description -urdf -model bookshelf_robot" />
   <rosparam file="$(find knock_robot)/controllers.yaml" command="load"/>
   <node name="controller_spawner" pkg="controller_manager" type="spawner"
-        args="arm_controller"/>
+        args="arm_controller_position arm_controller_effort"/>
   <!-- Convert /joint_states messages published by Gazebo to /tf messages,
        e.g., for rviz-->
   <node name="robot_state_publisher" pkg="robot_state_publisher"

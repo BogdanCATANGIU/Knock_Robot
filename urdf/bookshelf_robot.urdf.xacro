@@ -17,57 +17,62 @@
   <!-- Wheel links properties -->
   <xacro:property name="wheel_length" value="0.08" />
   <xacro:property name="wheel_radius" value="0.2" />
-  <xacro:property name="wheel_mass" value="1" />
+  <xacro:property name="wheel_mass" value="0.2" />
   <!-- Caster leg link propersties -->
   <xacro:property name="caster_leg_length" value="0.05" />
   <xacro:property name="caster_leg_width" value="0.05" />
-  <xacro:property name="caster_leg_height" value="0.08" />
-  <xacro:property name="caster_leg_mass" value="0.3"/>
+  <xacro:property name="caster_leg_height" value="0.1" />
+  <xacro:property name="caster_leg_mass" value="0.1"/>
   <!-- Caster leg link properties -->
   <xacro:property name="caster_radius" value="0.04"/>
-  <xacro:property name="caster_mass" value="0.3"/>
+  <xacro:property name="caster_mass" value="0.1"/>
   <!-- ############ -->
   <!-- Robotic arm  -->
   <!-- ############ -->
   <!-- Arm base properties -->
   <xacro:property name="arm_base_radius" value="0.20"/>
   <xacro:property name="arm_base_length" value="0.05"/>
-  <xacro:property name="arm_base_mass" value="0.5" />
+  <xacro:property name="arm_base_mass" value="1" />
   <!-- Torso properties -->
   <xacro:property name="torso_radius" value="0.05"/>
-  <xacro:property name="torso_length" value="1"/>
-  <xacro:property name="torso_mass" value="0.5" />
+  <xacro:property name="torso_length" value="1.2"/>
+  <xacro:property name="torso_mass" value="0.25" />
   <!-- Arm properties -->
   <xacro:property name="arm_radius" value="0.05"/>
-  <xacro:property name="arm_length" value="0.7"/>
-  <xacro:property name="arm_mass" value="0.25" />
+  <xacro:property name="arm_length" value="0.4"/>
+  <xacro:property name="arm_mass" value="0.1" />
+  <!-- Elbow properties -->
+  <xacro:property name="elbow_radius" value="0.05"/>
+  <xacro:property name="elbow_length" value="0.7"/>
+  <xacro:property name="elbow_mass" value="0.1" />
   <!-- Hand properties -->
   <!-- Hand base -->
   <xacro:property name="hand_base_length" value="0.08" />
   <xacro:property name="hand_base_radius" value="0.01" />
-  <xacro:property name="hand_base_mass" value="0.1"/>
+  <xacro:property name="hand_base_mass" value="0.05"/>
   <!-- Hand palm -->
   <xacro:property name="hand_palm_length" value="0.2" />
   <xacro:property name="hand_palm_width" value="0.01" />
   <xacro:property name="hand_palm_height" value="0.05" />
-  <xacro:property name="hand_palm_mass" value="0.1"/>
+  <xacro:property name="hand_palm_mass" value="0.08"/>
   <!-- Hand finger -->
   <xacro:property name="hand_finger_length" value="0.2" />
   <xacro:property name="hand_finger_width" value="0.01" />
-  <xacro:property name="hand_finger_height" value="0.025" />
-  <xacro:property name="hand_finger_mass" value="0.1"/>
+  <xacro:property name="hand_finger_height" value="0.06" />
+  <xacro:property name="hand_finger_mass" value="0.05"/>
 
   
   <!-- ########################## -->
   <!-- Mobile base implementation -->
   <!-- ########################## -->
-  <!-- <link name="footprint" />
+  <link name="footprint">
+  </link>
 
   <joint name="base_joint" type="fixed">
     <parent link="footprint"/>
     <child link="chassis"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint> -->
+    <origin rpy="0 0 0" xyz="0 0 ${wheel_radius}"/>
+  </joint>
 
   <link name="chassis">
     <visual>
@@ -134,7 +139,7 @@
     <axis xyz="0 0 1"/>
     <parent link="chassis"/>
     <child link="right_wheel"/>
-    <origin rpy="${-PI/2} 0 0" xyz="${-chassis_length/4} ${+chassis_width/2+wheel_length/2} 0"/>
+    <origin rpy="${-PI/2} 0 0" xyz="${-chassis_length/4}  ${+chassis_width/2+wheel_length/2} 0"/>
   </joint>
 
   <link name="caster_leg">
@@ -190,8 +195,12 @@
       <leftJoint>left_wheel_joint</leftJoint>
       <rightJoint>right_wheel_joint</rightJoint>
       <robotBaseFrame>chassis</robotBaseFrame>
-      <wheelSeparation>${chassis_width}</wheelSeparation>
+      <wheelSeparation>${chassis_width-wheel_length}</wheelSeparation>
       <wheelDiameter>${2*wheel_radius}</wheelDiameter>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <publishWheelTF>true</publishWheelTF>
+      <rosDebugLevel>na</rosDebugLevel>
       <publishWheelJointState>true</publishWheelJointState>
     </plugin>
   </gazebo>
@@ -255,14 +264,17 @@
       <geometry>
         <cylinder length="${arm_length}" radius="${arm_radius}"/>
       </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${-arm_length/2}"/>
       <material name="orange"/>
     </visual>
     <collision>
+      <origin rpy="0 0 0" xyz="0 0 ${-arm_length/2}"/>
       <geometry>
         <cylinder length="${arm_length}" radius="${arm_radius}"/>
       </geometry>
     </collision>
     <inertial>
+      <origin rpy="0 0 0" xyz="0 0 ${-arm_length/2}"/>
       <mass value="${arm_mass}"/>
       <cylinder_inertia m="${arm_mass}" r="${arm_length}" h="${arm_radius}"/>
     </inertial>
@@ -271,9 +283,38 @@
   <joint name="shoulder_joint" type="prismatic">
     <parent link="torso"/>
     <child link="arm"/>
-    <origin rpy="0 ${-PI/2} 0" xyz="${arm_length/2} 0 ${-torso_length/2}"/>
+    <origin rpy="0 ${-PI/2} 0" xyz="0 ${-2*arm_radius} ${-torso_length/2}"/>
     <axis xyz="1 0 0"/>
-    <limit effort="4" lower="0" upper="0.9" velocity="0.15" />
+    <limit effort="10.0" lower="0.0" upper="0.9" velocity="10" />
+  </joint>
+
+  <link name="elbow">
+    <visual>
+      <geometry>
+        <cylinder length="${elbow_length}" radius="${elbow_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${-elbow_length/2}"/>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 ${-elbow_length/2}"/>
+      <geometry>
+        <cylinder length="${elbow_length}" radius="${elbow_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 ${-arm_length/2}"/>
+      <mass value="${elbow_mass}"/>
+      <cylinder_inertia m="${elbow_mass}" r="${elbow_length}" h="${elbow_radius}"/>
+    </inertial>
+  </link>
+
+  <joint name="elbow_joint" type="prismatic">
+    <parent link="arm"/>
+    <child link="elbow"/>
+    <origin rpy="0 0 0" xyz="0 ${2*arm_radius} ${-arm_length/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10.0" lower="0.0" upper="0.15" velocity="10" />
   </joint>
 
   <link name="hand_base">
@@ -298,10 +339,10 @@
   </link>
 
   <joint name="wrist_joint" type="revolute">
-    <parent link="arm"/>
+    <parent link="elbow"/>
     <child link="hand_base"/>
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 0 ${-arm_length/2}-{hand_base_length/2}"/>
+    <origin rpy="0 0 0" xyz="0 0 ${-elbow_length}-{hand_base_length/2}"/>
     <limit effort="1" lower="${-PI/2}" upper="${PI/2}" velocity="0.15" />
   </joint>
 
@@ -356,7 +397,7 @@
     <child link="hand_left_finger"/>
     <origin rpy="0 0 ${PI/2}" xyz="${-hand_palm_length/2} 0 0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="0.5" lower="0" upper="0.05" velocity="0.15" />
+    <limit effort="10" lower="0" upper="0.05" velocity="0.4" />
   </joint>
 
   <link name="hand_right_finger">
@@ -385,7 +426,7 @@
     <child link="hand_right_finger"/>
     <origin rpy="0 0 ${PI/2}" xyz="${hand_palm_length/2} 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="0.5" lower="0" upper="0.05" velocity="0.15" />
+    <limit effort="10" lower="0" upper="0.05" velocity="0.4" />
   </joint>
 
 
@@ -393,50 +434,60 @@
   <transmission name="tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="hip_joint">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor0">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="shoulder_joint">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor1">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="tran5">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="elbow_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor5">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="wrist_joint">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor2">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="left_finger_joint">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor3">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="tran4">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="right_finger_joint">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor4">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>

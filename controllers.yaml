@@ -1,8 +1,25 @@
-arm_controller:
+arm_controller_position:
   type: "position_controllers/JointTrajectoryController"
   joints:
     - hip_joint
-    - shoulder_joint
     - wrist_joint
+    # - shoulder_joint
+    # - left_finger_joint
+    # - right_finger_joint
+arm_controller_effort:
+  type: "effort_controllers/JointTrajectoryController"
+  joints:
+    - shoulder_joint
+    - elbow_joint
     - left_finger_joint
     - right_finger_joint
+
+  gains: # Required because we're controlling an effort interface
+    shoulder_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+    elbow_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+    left_finger_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+    right_finger_joint: {p: 100,  d: 1, i: 1, i_clamp: 1}
+
+  state_publish_rate:  25            # Override default
+  action_monitor_rate: 30            # Override default
+  stop_trajectory_duration: 0        # Override default
