@@ -12,14 +12,14 @@
       <material>Gazebo/Black</material>
     </gazebo>
     <gazebo reference="hand_left_finger">
-      <mu1>50.0</mu1>
-      <mu2>50.0</mu2>
+      <mu1>500.0</mu1>
+      <mu2>500.0</mu2>
       <minDepth>0.003</minDepth>  
       <maxVel>0</maxVel>  
    </gazebo>
    <gazebo reference="hand_right_finger">
-      <mu1>50.0</mu1>
-      <mu2>50.0</mu2>
+      <mu1>500.0</mu1>
+      <mu2>500.0</mu2>
       <minDepth>0.003</minDepth>  
       <maxVel>0</maxVel>  
    </gazebo>
