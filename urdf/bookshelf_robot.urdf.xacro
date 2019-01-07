@@ -60,6 +60,9 @@
   <xacro:property name="hand_finger_width" value="0.01" />
   <xacro:property name="hand_finger_height" value="0.06" />
   <xacro:property name="hand_finger_mass" value="0.05"/>
+  <!-- Camera -->
+  <xacro:property name="camera_dimensions" value="0.05" />
+  <xacro:property name="camera_mass" value="0.01" />
 
   
   <!-- ########################## -->
@@ -285,7 +288,7 @@
     <child link="arm"/>
     <origin rpy="0 ${-PI/2} 0" xyz="0 ${-2*arm_radius} ${-torso_length/2}"/>
     <axis xyz="1 0 0"/>
-    <limit effort="100.0" lower="-0.1" upper="1.1" velocity="1" />
+    <limit effort="100.0" lower="0.0" upper="1.1" velocity="1" />
   </joint>
 
   <link name="elbow">
@@ -429,6 +432,34 @@
     <limit effort="50" lower="0" upper="0.05" velocity="0.4" />
   </joint>
 
+  <!-- Camera -->
+
+  <link name="camera_link">
+    <collision>
+      <geometry>
+      <box size="${camera_dimensions} ${camera_dimensions} ${camera_dimensions}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+      <box size="${camera_dimensions} ${camera_dimensions} ${camera_dimensions}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <inertial>
+      <mass value="${camera_mass}"/>
+      <box_inertia m="${camera_mass}" x="${camera_dimensions}" y="${camera_dimensions}" z="${camera_dimensions}"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0 0 ${-torso_length/2}" rpy="0 0 0"/>
+    <parent link="torso"/>
+    <child link="camera_link"/>
+  </joint>
+
 
 
   <transmission name="tran0">
@@ -499,6 +530,5 @@
     <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
       <jointName>hip_joint, shoulder_joint, elbow_joint, wrist_joint, left_finger_joint, right_finger_joint </jointName>
     </plugin>
-</gazebo>
-
+  </gazebo>
 </robot>
