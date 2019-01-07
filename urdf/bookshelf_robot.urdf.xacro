@@ -285,7 +285,7 @@
     <child link="arm"/>
     <origin rpy="0 ${-PI/2} 0" xyz="0 ${-2*arm_radius} ${-torso_length/2}"/>
     <axis xyz="1 0 0"/>
-    <limit effort="100.0" lower="0.0" upper="1.1" velocity="1" />
+    <limit effort="100.0" lower="-0.1" upper="1.1" velocity="1" />
   </joint>
 
   <link name="elbow">

@@ -3,9 +3,6 @@ arm_controller_position:
   joints:
     - hip_joint
     - wrist_joint
-    # - shoulder_joint
-    # - left_finger_joint
-    # - right_finger_joint
 arm_controller_effort:
   type: "effort_controllers/JointTrajectoryController"
   joints:

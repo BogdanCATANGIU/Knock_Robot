@@ -21,7 +21,7 @@
         type="robot_state_publisher"/>
   <!-- Spawn joy to Twist functionality -->
   <node name="joy" pkg="joy"
-        type="joy_node" args="_deadzone 0.12"/>
+        type="joy_node" args="_deadzone 0.40"/>
   <node name="joy_to_twist" pkg="knock_robot"
         type="joy_to_twist.py"/>
 
