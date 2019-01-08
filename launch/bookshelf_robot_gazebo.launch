@@ -7,7 +7,7 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
   <!-- Spawn a bookshelf_robot in Gazebo, taking the description from the
        parameter server -->
-  <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find cw3_gazebo)/models/bookshelf_with_cans/model.sdf -x 3 -Y -90 -sdf -model shelf" />
+  <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find cw3_gazebo)/models/bookshelf_with_cans/model.sdf -x 3 -y 3 -sdf -model shelf" />
   <node name="moving" pkg="cw3_gazebo" type= "gen_random.py" />
   
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
@@ -21,9 +21,12 @@
         type="robot_state_publisher"/>
   <!-- Spawn joy to Twist functionality -->
   <node name="joy" pkg="joy"
-        type="joy_node" args="_deadzone 0.40"/>
+        type="joy_node" args="_deadzone:=0.40"/>
   <node name="joy_to_twist" pkg="knock_robot"
         type="joy_to_twist.py"/>
   <node name="joy_to_joint" pkg="knock_robot"
         type="joy_to_joint.py"/>
+  <!-- Map -->
+  <!-- <node name="map_server" pkg="map_server"
+        type="map_server"/> -->
 </launch>
