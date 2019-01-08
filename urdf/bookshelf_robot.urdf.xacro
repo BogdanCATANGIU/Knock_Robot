@@ -441,7 +441,7 @@
       </geometry>
     </collision>
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="${-camera_dimensions/2} 0 0" rpy="0 0 0"/>
       <geometry>
       <box size="${camera_dimensions} ${camera_dimensions} ${camera_dimensions}"/>
       </geometry>
@@ -455,8 +455,8 @@
 
   <joint name="camera_joint" type="fixed">
     <axis xyz="0 1 0" />
-    <origin xyz="0 0 ${-torso_length/2}" rpy="0 0 0"/>
-    <parent link="torso"/>
+    <origin xyz="${-elbow_radius} 0 ${-elbow_length}" rpy="${PI} ${PI/2} 0"/>
+    <parent link="elbow"/>
     <child link="camera_link"/>
   </joint>
 
