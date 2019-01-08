@@ -63,6 +63,17 @@
   <!-- Camera -->
   <xacro:property name="camera_dimensions" value="0.05" />
   <xacro:property name="camera_mass" value="0.01" />
+  <!-- Laser Scanner -->
+
+  <xacro:property name="lidar_base_length" value="0.04" />
+  <xacro:property name="lidar_base_radius" value="0.01" />
+  <xacro:property name="lidar_base_mass" value="0.05"/>
+
+  <xacro:property name="lidar_length" value="0.05" />
+  <xacro:property name="lidar_width" value="0.05" />
+  <xacro:property name="lidar_height" value="0.05" />
+  <xacro:property name="lidar_mass" value="0.1"/>
+
 
   
   <!-- ########################## -->
@@ -454,11 +465,65 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <axis xyz="0 1 0" />
     <origin xyz="${-elbow_radius} 0 ${-elbow_length}" rpy="${PI} ${PI/2} 0"/>
     <parent link="elbow"/>
     <child link="camera_link"/>
   </joint>
+
+  <!-- Laser Scanner -->
+
+<link name="lidar_base">
+    <visual>
+      <geometry>
+        <cylinder length="${lidar_base_length}" radius="${lidar_base_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${lidar_base_length/2}"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${lidar_base_length}" radius="${lidar_base_radius}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="${lidar_base_mass}"/>
+      <cylinder_inertia m="${lidar_base_mass}" r="${lidar_base_radius}" h="${lidar_base_length}"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </inertial>
+  </link>
+
+  <joint name="base_lidar_joint" type="fixed">
+    <origin xyz="${chassis_length/3} 0 ${chassis_height/2}" rpy="0 0 0"/>
+    <parent link="chassis"/>
+    <child link="lidar_base"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${chassis_mass}"/>
+      <box_inertia m="${lidar_mass}" x="${lidar_length}" y="${lidar_width}" z="${lidar_height}"/>
+    </inertial>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <origin xyz="0 0 ${lidar_base_length}" rpy="0 0 0"/>
+    <parent link="lidar_base"/>
+    <child link="lidar_link"/>
+  </joint>
+
 
 
 

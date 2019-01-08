@@ -11,24 +11,44 @@
       <mu2>0.0</mu2>
       <material>Gazebo/Black</material>
     </gazebo>
-    <gazebo reference="hand_left_finger">
-      <mu1>500.0</mu1>
-      <mu2>500.0</mu2>
-      <minDepth>0.003</minDepth>  
-      <maxVel>0</maxVel>  
-   </gazebo>
-   <gazebo reference="hand_right_finger">
-      <mu1>500.0</mu1>
-      <mu2>500.0</mu2>
-      <minDepth>0.003</minDepth>  
-      <maxVel>0</maxVel>  
-   </gazebo>
     <gazebo reference="left_wheel">
       <material>Gazebo/Blue</material>
     </gazebo>
     <gazebo reference="right_wheel">
       <material>Gazebo/Blue</material>
     </gazebo>
+    <gazebo reference="arm_base">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="torso">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="arm">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="elbow">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="hand_base">
+      <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="hand_palm">
+      <material>Gazebo/Blue</material>
+    </gazebo>
+    <gazebo reference="hand_left_finger">
+      <mu1>500.0</mu1>
+      <mu2>500.0</mu2>
+      <minDepth>0.003</minDepth>  
+      <maxVel>0</maxVel> 
+      <material>Gazebo/Blue</material> 
+   </gazebo>
+   <gazebo reference="hand_right_finger">
+      <mu1>500.0</mu1>
+      <mu2>500.0</mu2>
+      <minDepth>0.003</minDepth>  
+      <maxVel>0</maxVel>
+      <material>Gazebo/Blue</material>
+   </gazebo>
 
      <!-- camera -->
   <gazebo reference="camera_link">
@@ -68,4 +88,33 @@
     </plugin>
     </sensor>
   </gazebo>
+  <!-- Laser scanner -->
+
+  <gazebo reference="lidar_link">
+    <sensor type="ray" name="hokuyo">
+    <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.570796</min_angle>
+            <max_angle>1.570796</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+
+      <plugin name="gpu_laser" filename="libgazebo_ros_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>lidar_link</frameName>
+      </plugin>
+    </sensor>
+</gazebo>
 </robot>
