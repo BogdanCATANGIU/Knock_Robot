@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bookshelf_robot">
-    <gazebo reference="chassis">
+    <gazebo reference="base_link">
       <material>Gazebo/Red</material>
     </gazebo>
     <gazebo reference="caster_leg">

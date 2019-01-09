@@ -4,8 +4,8 @@
   <arg name="model" default="$(find knock_robot)/urdf/bookshelf_robot.urdf.xacro"/>
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
   <!-- Start Gazebo with an empty world -->
-  <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch"/> -->
-  <include file="$(find knock_robot)/launch/wall_empty_world.launch"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+  <!-- <include file="$(find knock_robot)/launch/wall_empty_world.launch"/> -->
   <!-- Spawn a bookshelf_robot in Gazebo, taking the description from the
        parameter server -->
   <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find knock_robot)/models/bookshelf_with_cans/model.sdf -x 3 -y 3 -sdf -model shelf" />
@@ -28,6 +28,17 @@
   <node name="joy_to_joint" pkg="knock_robot"
         type="joy_to_joint.py"/>
   <!-- Map -->
-  <!-- <node name="map_server" pkg="map_server"
-        type="map_server"/> -->
+  <node name="map_server" pkg="map_server"
+        type="map_server" args="$(find knock_robot)/maps/blank_map.yaml"/>
+
+  <!-- <include file="$(find amcl)/examples/amcl_diff.launch"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find knock_robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find knock_robot)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find knock_robot)/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find knock_robot)/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find knock_robot)/base_local_planner_params.yaml" command="load" />
+</node> -->
+
 </launch>

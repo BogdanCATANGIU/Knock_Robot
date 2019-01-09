@@ -79,16 +79,16 @@
   <!-- ########################## -->
   <!-- Mobile base implementation -->
   <!-- ########################## -->
-  <link name="footprint">
+  <!-- <link name="footprint">
   </link>
 
   <joint name="base_joint" type="fixed">
     <parent link="footprint"/>
     <child link="chassis"/>
     <origin rpy="0 0 0" xyz="0 0 ${wheel_radius}"/>
-  </joint>
+  </joint> -->
 
-  <link name="chassis">
+  <link name="base_link">
     <visual>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
@@ -126,7 +126,7 @@
 
  <joint name="left_wheel_joint" type="continuous">
     <axis xyz="0 0 1"/>
-    <parent link="chassis"/>
+    <parent link="base_link"/>
     <child link="left_wheel"/>
     <origin rpy="${-PI/2} 0 0" xyz="${-chassis_length/4} ${-chassis_width/2-wheel_length/2} 0}"/>
   </joint>
@@ -151,7 +151,7 @@
 
   <joint name="right_wheel_joint" type="continuous">
     <axis xyz="0 0 1"/>
-    <parent link="chassis"/>
+    <parent link="base_link"/>
     <child link="right_wheel"/>
     <origin rpy="${-PI/2} 0 0" xyz="${-chassis_length/4}  ${+chassis_width/2+wheel_length/2} 0"/>
   </joint>
@@ -175,7 +175,7 @@
   </link>
   
   <joint name="chassis_caster_leg_joint" type="fixed">
-    <parent link="chassis"/>
+    <parent link="base_link"/>
     <child link="caster_leg"/>
     <origin rpy="0 0 0" xyz="${3*chassis_length/8} 0 ${-chassis_height/2-caster_leg_height/2}"/>
   </joint>
@@ -208,7 +208,7 @@
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <leftJoint>left_wheel_joint</leftJoint>
       <rightJoint>right_wheel_joint</rightJoint>
-      <robotBaseFrame>chassis</robotBaseFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
       <wheelSeparation>${chassis_width-wheel_length}</wheelSeparation>
       <wheelDiameter>${2*wheel_radius}</wheelDiameter>
       <odometryTopic>odom</odometryTopic>
@@ -242,7 +242,7 @@
   </link>
 
   <joint name="chassis_arm_base" type="fixed">
-    <parent link="chassis"/>
+    <parent link="base_link"/>
     <child link="arm_base"/>
     <origin rpy="${-PI} 0 0" xyz="0 0 ${chassis_height/2+arm_base_length/2}"/>
   </joint>
@@ -491,7 +491,7 @@
 
   <joint name="base_lidar_joint" type="fixed">
     <origin xyz="${chassis_length/3} 0 ${chassis_height/2}" rpy="0 0 0"/>
-    <parent link="chassis"/>
+    <parent link="base_link"/>
     <child link="lidar_base"/>
   </joint>
 
