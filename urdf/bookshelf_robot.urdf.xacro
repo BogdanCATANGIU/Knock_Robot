@@ -72,7 +72,7 @@
 
   <xacro:property name="lidar_length" value="0.05" />
   <xacro:property name="lidar_width" value="0.05" />
-  <xacro:property name="lidar_height" value="0.05" />
+  <xacro:property name="lidar_height" value="0.01" />
   <xacro:property name="lidar_mass" value="0.1"/>
 
 
@@ -541,7 +541,7 @@
   </link>
 
   <joint name="lidar_joint" type="fixed">
-    <origin xyz="0 0 ${lidar_base_length/2+lidar_height}" rpy="0 0 0"/>
+    <origin xyz="0 0 ${lidar_base_length/2+lidar_height}" rpy="0 ${-PI/128} 0"/>
     <parent link="lidar_base"/>
     <child link="lidar_link"/>
   </joint>

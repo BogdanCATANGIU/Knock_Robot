@@ -34,7 +34,11 @@ def effort_callback(data):
         pass
     else:
         effort_points.positions[0] -= 0.005
-    
+    #button that controls wrist joint
+    if data.axes[4] != 0:
+        position_points.positions[1] = data.axes[4]*1.57
+    else:
+        position_points.positions[1] = 0
     #button that controls hip joint
     if data.buttons[6]:
         position_points.positions[0] -= 0.01
@@ -72,7 +76,7 @@ def start():
     global effort_points, position_points
     effort_points = JointTrajectoryPoint()
     position_points = JointTrajectoryPoint()
-    effort_points.positions = [0.25, 1.0]
+    effort_points.positions = [0.25, 1.135]
     position_points.positions = [0, 0]
     effort_joint_names = ["elbow_joint", "shoulder_joint"]
     position_joint_names = ["hip_joint", "wrist_joint"]
