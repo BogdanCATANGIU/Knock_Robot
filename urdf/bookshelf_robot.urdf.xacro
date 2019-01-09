@@ -15,14 +15,14 @@
   <xacro:property name="chassis_height" value="0.1" />
   <xacro:property name="chassis_mass" value="2.0"/>
   <!-- Wheel links properties -->
-  <xacro:property name="wheel_length" value="0.08" />
+  <xacro:property name="wheel_length" value="0.05" />
   <xacro:property name="wheel_radius" value="0.2" />
   <xacro:property name="wheel_mass" value="0.2" />
   <!-- Caster leg link propersties -->
-  <xacro:property name="caster_leg_length" value="0.05" />
-  <xacro:property name="caster_leg_width" value="0.05" />
+  <xacro:property name="caster_leg_length" value="0.03" />
+  <xacro:property name="caster_leg_width" value="0.03" />
   <xacro:property name="caster_leg_height" value="0.1" />
-  <xacro:property name="caster_leg_mass" value="0.1"/>
+  <xacro:property name="caster_leg_mass" value="0.7"/>
   <!-- Caster leg link properties -->
   <xacro:property name="caster_radius" value="0.04"/>
   <xacro:property name="caster_mass" value="0.1"/>
@@ -43,7 +43,7 @@
   <xacro:property name="arm_mass" value="0.05" />
   <!-- Elbow properties -->
   <xacro:property name="elbow_radius" value="0.05"/>
-  <xacro:property name="elbow_length" value="0.7"/>
+  <xacro:property name="elbow_length" value="0.8"/>
   <xacro:property name="elbow_mass" value="0.1" />
   <!-- Hand properties -->
   <!-- Hand base -->
@@ -65,7 +65,7 @@
   <xacro:property name="camera_mass" value="0.01" />
   <!-- Laser Scanner -->
 
-  <xacro:property name="lidar_base_length" value="0.04" />
+  <xacro:property name="lidar_base_length" value="0.02" />
   <xacro:property name="lidar_base_radius" value="0.01" />
   <xacro:property name="lidar_base_mass" value="0.05"/>
 
@@ -299,7 +299,7 @@
     <child link="arm"/>
     <origin rpy="0 ${-PI/2} 0" xyz="0 ${-2*arm_radius} ${-torso_length/2}"/>
     <axis xyz="1 0 0"/>
-    <limit effort="100.0" lower="0.0" upper="1.1" velocity="100" />
+    <limit effort="100.0" lower="0.0" upper="1.15" velocity="100" />
   </joint>
 
   <link name="elbow">
@@ -328,7 +328,7 @@
     <child link="elbow"/>
     <origin rpy="0 0 0" xyz="0 ${2*arm_radius} ${-arm_length/2}"/>
     <axis xyz="0 0 1"/>
-    <limit effort="10.0" lower="0.0" upper="0.25" velocity="10" />
+    <limit effort="10.0" lower="0.0" upper="0.35" velocity="10" />
   </joint>
 
   <link name="hand_base">
@@ -444,11 +444,11 @@
   <link name="camera_link">
     <collision>
       <geometry>
-      <box size="${camera_dimensions} ${camera_dimensions} ${camera_dimensions}"/>
+      <box size="${camera_dimensions} ${2*camera_dimensions} ${camera_dimensions}"/>
       </geometry>
     </collision>
     <visual>
-      <origin xyz="${-camera_dimensions/2} 0 0" rpy="0 0 0"/>
+      <origin xyz="${-camera_dimensions/2} 0 ${-camera_dimensions/2}" rpy="0 0 0"/>
       <geometry>
       <box size="${camera_dimensions} ${camera_dimensions} ${camera_dimensions}"/>
       </geometry>
@@ -461,7 +461,7 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <origin xyz="${-elbow_radius} 0 ${-elbow_length}" rpy="${PI} ${PI/2} 0"/>
+    <origin xyz="${-elbow_radius-0.04} 0 ${-0.9*elbow_length}" rpy="${PI} ${PI/2.5} 0"/>
     <parent link="elbow"/>
     <child link="camera_link"/>
   </joint>

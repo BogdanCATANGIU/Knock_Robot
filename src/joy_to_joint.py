@@ -42,6 +42,7 @@ def effort_callback(data):
         position_points.positions[0] += 0.01
     #button to knock can of the shelf
     if data.buttons[3]:
+        effort_points.positions[0] += 0.15
         position_points.positions[0] -= 0.5
 
     effort_points.time_from_start = rospy.Time(1)
@@ -61,7 +62,7 @@ def start():
     global effort_points, position_points
     effort_points = JointTrajectoryPoint()
     position_points = JointTrajectoryPoint()
-    effort_points.positions = [0.25, 0.45]
+    effort_points.positions = [0.25, 1.0]
     position_points.positions = [0, 0]
     effort_joint_names = ["elbow_joint", "shoulder_joint"]
     position_joint_names = ["hip_joint", "wrist_joint"]
