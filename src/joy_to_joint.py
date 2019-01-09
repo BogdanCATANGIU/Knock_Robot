@@ -43,7 +43,17 @@ def effort_callback(data):
     #button to knock can of the shelf
     if data.buttons[3]:
         effort_points.positions[0] += 0.15
-        position_points.positions[0] -= 0.5
+        position_points.positions[0] -= 0.3
+    #button to go to second can height
+    if data.buttons[2]:
+        effort_points.positions[1] = 0.845
+    #button to go to third can height
+    if data.buttons[0]:
+        effort_points.positions[1] = 0.5
+    #button to go to fourth can height
+    if data.buttons[1]:
+        effort_points.positions[1] = 0.14
+
 
     effort_points.time_from_start = rospy.Time(1)
     position_points.time_from_start = rospy.Time(1)

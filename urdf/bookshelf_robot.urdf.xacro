@@ -13,19 +13,19 @@
   <xacro:property name="chassis_length" value="0.9" />
   <xacro:property name="chassis_width" value="0.5" />
   <xacro:property name="chassis_height" value="0.1" />
-  <xacro:property name="chassis_mass" value="2.0"/>
+  <xacro:property name="chassis_mass" value="5.0"/>
   <!-- Wheel links properties -->
-  <xacro:property name="wheel_length" value="0.05" />
+  <xacro:property name="wheel_length" value="0.1" />
   <xacro:property name="wheel_radius" value="0.2" />
-  <xacro:property name="wheel_mass" value="0.2" />
+  <xacro:property name="wheel_mass" value="1" />
   <!-- Caster leg link propersties -->
   <xacro:property name="caster_leg_length" value="0.03" />
   <xacro:property name="caster_leg_width" value="0.03" />
-  <xacro:property name="caster_leg_height" value="0.1" />
-  <xacro:property name="caster_leg_mass" value="0.7"/>
+  <xacro:property name="caster_leg_height" value="0.08" />
+  <xacro:property name="caster_leg_mass" value="1"/>
   <!-- Caster leg link properties -->
   <xacro:property name="caster_radius" value="0.04"/>
-  <xacro:property name="caster_mass" value="0.1"/>
+  <xacro:property name="caster_mass" value="0.5"/>
   <!-- ############ -->
   <!-- Robotic arm  -->
   <!-- ############ -->
@@ -62,6 +62,7 @@
   <xacro:property name="hand_finger_mass" value="0.05"/>
   <!-- Camera -->
   <xacro:property name="camera_dimensions" value="0.05" />
+  <xacro:property name="camera_gripper_dimensions" value="0.025" />
   <xacro:property name="camera_mass" value="0.01" />
   <!-- Laser Scanner -->
 
@@ -466,6 +467,31 @@
     <child link="camera_link"/>
   </joint>
 
+  <link name="camera_gripper_link">
+    <collision>
+      <geometry>
+      <box size="${camera_gripper_dimensions} ${2*camera_gripper_dimensions} ${camera_gripper_dimensions}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="${-camera_gripper_dimensions/2} 0 ${-camera_gripper_dimensions/2}" rpy="0 0 0"/>
+      <geometry>
+      <box size="${camera_gripper_dimensions} ${camera_gripper_dimensions} ${camera_gripper_dimensions}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <inertial>
+      <mass value="${camera_mass}"/>
+      <box_inertia m="${camera_mass}" x="${camera_gripper_dimensions}" y="${camera_gripper_dimensions}" z="${camera_gripper_dimensions}"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_gripper_joint" type="fixed">
+    <origin xyz="${-hand_finger_length/2} 0 ${-hand_finger_height/2}" rpy="${PI} 0 ${PI/2}"/>
+    <parent link="hand_right_finger"/>
+    <child link="camera_gripper_link"/>
+  </joint>
+
   <!-- Laser Scanner -->
 
 <link name="lidar_base">
@@ -490,7 +516,7 @@
   </link>
 
   <joint name="base_lidar_joint" type="fixed">
-    <origin xyz="${chassis_length/3} 0 ${chassis_height/2}" rpy="0 0 0"/>
+    <origin xyz="${0.9*chassis_length/2} 0 ${chassis_height/2}" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="lidar_base"/>
   </joint>
@@ -500,7 +526,7 @@
       <geometry>
         <box size="${lidar_length} ${lidar_width} ${lidar_height}"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 ${-lidar_height/2}" rpy="0 0 0"/>
       <material name="white"/>
     </visual>
     <collision>
@@ -515,7 +541,7 @@
   </link>
 
   <joint name="lidar_joint" type="fixed">
-    <origin xyz="0 0 ${lidar_base_length}" rpy="0 0 0"/>
+    <origin xyz="0 0 ${lidar_base_length/2+lidar_height}" rpy="0 0 0"/>
     <parent link="lidar_base"/>
     <child link="lidar_link"/>
   </joint>

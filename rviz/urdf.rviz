@@ -7,11 +7,14 @@ Panels:
         - /Global Options1
         - /Status1
         - /RobotModel1
+        - /RobotModel1/Links1
         - /TF1
+        - /TF1/Frames1
         - /Camera1
         - /LaserScan1
         - /Map1
         - /PoseArray1
+        - /Camera2
       Splitter Ratio: 0.5
     Tree Height: 579
   - Class: rviz/Selection
@@ -77,6 +80,11 @@ Visualization Manager:
           Show Trail: false
           Value: true
         base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_gripper_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -156,12 +164,14 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
         arm:
           Value: true
         arm_base:
           Value: true
         base_link:
+          Value: true
+        camera_gripper_link:
           Value: true
         camera_link:
           Value: true
@@ -185,8 +195,6 @@ Visualization Manager:
           Value: true
         lidar_link:
           Value: true
-        map:
-          Value: true
         odom:
           Value: true
         right_wheel:
@@ -199,30 +207,31 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          odom:
-            base_link:
-              arm_base:
-                torso:
-                  arm:
-                    elbow:
-                      camera_link:
-                        {}
-                      hand_base:
-                        hand_palm:
-                          hand_right_finger:
-                            hand_left_finger:
-                              {}
-              caster_leg:
-                caster_wheel:
-                  {}
-              left_wheel:
+        odom:
+          base_link:
+            arm_base:
+              torso:
+                arm:
+                  elbow:
+                    camera_link:
+                      {}
+                    hand_base:
+                      hand_palm:
+                        hand_right_finger:
+                          camera_gripper_link:
+                            {}
+                          hand_left_finger:
+                            {}
+            caster_leg:
+              caster_wheel:
                 {}
-              lidar_base:
-                lidar_link:
-                  {}
-              right_wheel:
+            left_wheel:
+              {}
+            lidar_base:
+              lidar_link:
                 {}
+            right_wheel:
+              {}
       Update Interval: 0
       Value: true
     - Class: rviz/Camera
@@ -236,6 +245,7 @@ Visualization Manager:
       Unreliable: false
       Value: true
       Visibility:
+        Camera: true
         Grid: true
         LaserScan: true
         Map: true
@@ -278,12 +288,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Map
       Topic: /map
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Arrow Length: 0.30000001192092896
       Axes Length: 0.30000001192092896
@@ -300,6 +310,26 @@ Visualization Manager:
       Topic: /particlecloud
       Unreliable: false
       Value: false
+    - Class: rviz/Camera
+      Enabled: true
+      Image Rendering: background and overlay
+      Image Topic: /gripper_camera/image_raw
+      Name: Camera
+      Overlay Alpha: 0.5
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+      Visibility:
+        Camera: true
+        Grid: true
+        LaserScan: true
+        Map: true
+        PoseArray: true
+        RobotModel: true
+        TF: true
+        Value: true
+      Zoom Factor: 1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -325,25 +355,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.454805374145508
+      Distance: 5.726641654968262
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.2555391192436218
-        Y: 0.3712674081325531
-        Z: 0.7699204683303833
+        X: 0.188150092959404
+        Y: -2.068361759185791
+        Z: 0.8675187230110168
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7853976488113403
+      Pitch: 0.5003977417945862
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.5199358463287354
+      Yaw: 4.539947509765625
     Saved: ~
 Window Geometry:
   Camera:
@@ -353,7 +383,7 @@ Window Geometry:
   Height: 882
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000156000002cefc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc0000003d000002ce000000c900fffffffa000000010100000002fb0000000c00430061006d00650072006103000005310000006800000156000002b1fb000000100044006900730070006c0061007900730100000000000001560000015600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d006500720061020000017e000000df0000030700000230000000010000010f000002cefc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007302000003f4000000760000010f000002cefb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004c000000044fc0100000002fb0000000800540069006d00650100000000000004c0000002eb00fffffffb0000000800540069006d0065010000000000000450000000000000000000000364000002ce00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000156000002cefc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afc0000003d000002ce000000c900fffffffa000000010100000002fb0000000c00430061006d00650072006103000005030000001d000001e7000001c6fb000000100044006900730070006c0061007900730100000000000001560000015600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610300000524000001e6000001b40000018efb0000000c00430061006d0065007200610300000505000001e6000001ec000001b2000000010000010f000002cefc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007302000003f4000000760000010f000002cefb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004c000000044fc0100000002fb0000000800540069006d00650100000000000004c0000002eb00fffffffb0000000800540069006d0065010000000000000450000000000000000000000364000002ce00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
