@@ -12,6 +12,7 @@ from control_msgs.msg import FollowJointTrajectoryActionGoal
 def effort_callback(data):
     effort_trajectory = JointTrajectory()
     position_trajectory = JointTrajectory()
+    height = [0.845, 0.5, 0.14]
     
     effort_trajectory.joint_names = effort_joint_names
     effort_trajectory.points.append(effort_points)
@@ -44,12 +45,15 @@ def effort_callback(data):
         position_points.positions[0] -= 0.01
     if data.buttons[7]:
         position_points.positions[0] += 0.01
+    #go to second can
     if data.buttons[5]:
         effort_points.positions[1] = 0.845
+    # go to third can
     if data.buttons[8]:
         effort_points.positions[1] = 0.5
     # if data.buttons[ceva]:
     #     effort_points.positions[1] = 0.14
+    
     #button to reset to original position of arm
     if data.buttons[3]:
         effort_points.positions[0] = 0.35
@@ -58,20 +62,16 @@ def effort_callback(data):
         position_points.positions[0] = 0
         position_points.positions[1] = 0
 
-    #button to go to second can height
+    #prepinch
     if data.buttons[2]:
-        # effort_points.positions[1] = 0.845
-        # position_points.positions[0] = 0.139
         position_points.positions[0] = 0.22
         effort_points.positions[0] = -0.005
 
-    #button to go to third can height
+    #pinch
     if data.buttons[0]:
-        # effort_points.positions[1] = 0.5
         position_points.positions[0] = -0.05
-    #button to go to fourth can height
+    #knock
     if data.buttons[1]:
-        # effort_points.positions[1] = 0.14
         position_points.positions[0] = -0.19
         effort_points.positions[0] = 0.34
 
