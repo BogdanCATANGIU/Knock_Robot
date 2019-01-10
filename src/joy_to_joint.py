@@ -44,19 +44,37 @@ def effort_callback(data):
         position_points.positions[0] -= 0.01
     if data.buttons[7]:
         position_points.positions[0] += 0.01
-    #button to knock can of the shelf
+    if data.buttons[5]:
+        effort_points.positions[1] = 0.845
+    if data.buttons[8]:
+        effort_points.positions[1] = 0.5
+    # if data.buttons[ceva]:
+    #     effort_points.positions[1] = 0.14
+    #button to reset to original position of arm
     if data.buttons[3]:
-        effort_points.positions[0] += 0.15
-        position_points.positions[0] -= 0.3
+        effort_points.positions[0] = 0.35
+        effort_points.positions[1] = 1.135
+
+        position_points.positions[0] = 0
+        position_points.positions[1] = 0
+
     #button to go to second can height
     if data.buttons[2]:
-        effort_points.positions[1] = 0.845
+        # effort_points.positions[1] = 0.845
+        # position_points.positions[0] = 0.139
+        position_points.positions[0] = 0.22
+        effort_points.positions[0] = -0.005
+
     #button to go to third can height
     if data.buttons[0]:
-        effort_points.positions[1] = 0.5
+        # effort_points.positions[1] = 0.5
+        position_points.positions[0] = -0.05
     #button to go to fourth can height
     if data.buttons[1]:
-        effort_points.positions[1] = 0.14
+        # effort_points.positions[1] = 0.14
+        position_points.positions[0] = -0.19
+        effort_points.positions[0] = 0.34
+
 
 
     effort_points.time_from_start = rospy.Time(1)
