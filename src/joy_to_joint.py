@@ -35,25 +35,28 @@ def effort_callback(data):
         pass
     else:
         effort_points.positions[0] -= 0.005
+
     #button that controls wrist joint
     if data.axes[4] != 0:
         position_points.positions[1] = data.axes[4]*1.57
     else:
         position_points.positions[1] = 0
+
     #button that controls hip joint
     if data.buttons[6]:
         position_points.positions[0] -= 0.01
     if data.buttons[7]:
         position_points.positions[0] += 0.01
-    #go to second can
+
+    #go to second can height
     if data.buttons[5]:
         effort_points.positions[1] = 0.845
-    # go to third can
+    # go to third can height
     if data.buttons[8]:
         effort_points.positions[1] = 0.5
     # if data.buttons[ceva]:
     #     effort_points.positions[1] = 0.14
-    
+
     #button to reset to original position of arm
     if data.buttons[3]:
         effort_points.positions[0] = 0.35

@@ -5,6 +5,7 @@ from sensor_msgs.msg import LaserScan
 
     # Author: Bogdan Catangiu
     # This ROS Node outputs if robot base is centered in relation to bookshelf
+    # Temporary behaviour
 def callback(data):
     angles = []
     ranges = []
@@ -24,10 +25,6 @@ def callback(data):
         print str(angles[0]) + " " + str(angles[-1]) + " LEFT"
     else:
         print str(angles[0]) + " " + str(angles[-1]) + " OK"
-
-    # print str(angles[0]) + " " + str(angles[-1]) + " " + str(ranges[len(angles)/2])
-
-
 
     # Intializes everything
 def start():
